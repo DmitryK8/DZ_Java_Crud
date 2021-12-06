@@ -1,12 +1,13 @@
 package ru.netology.repo;
 
 import ru.netology.domain.Issues;
+import ru.netology.domain.NotFoundException;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class IssuesRepo {
+public class IssuesRepo extends Issues {
     @lombok.Setter
     @lombok.Getter
     private List<Issues> items;
@@ -30,7 +31,6 @@ public class IssuesRepo {
 
     public boolean add(Issues item) {
         return items.add(item);
-
     }
 
     public boolean remove(Issues item) {
@@ -43,6 +43,32 @@ public class IssuesRepo {
 
     public boolean removeAll(Collection<? extends Issues> items) {
         return this.items.removeAll(items);
+    }
+
+
+    public Issues findById(int id) {
+        for (Issues item : items) {
+            if (item.getId() == id) {
+                return item;
+            }
+        }
+        return null;
+    }
+
+    public void removeById(int id) {
+        if (findById(id) == null) {
+            throw new NotFoundException("Element with id: " + id + " not found");
+        }
+        Issues[] tmp;
+        tmp = new Issues[items.toArray().length - 1];
+        int index = 0;
+        for (Issues item : items) {
+            if (item.getId() != id) {
+                tmp[index] = item;
+                index++;
+            }
+        }
+        items = List.of(tmp);
     }
 }
 

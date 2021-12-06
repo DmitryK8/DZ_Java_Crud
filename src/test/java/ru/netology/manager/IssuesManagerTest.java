@@ -3,12 +3,13 @@ package ru.netology.manager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.netology.domain.Issues;
+import ru.netology.domain.NotFoundException;
 import ru.netology.repo.IssuesRepo;
 
 import java.util.List;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 class IssuesManagerTest {
 
@@ -18,7 +19,7 @@ class IssuesManagerTest {
         repo = new IssuesRepo();
     }
 
-    private IssuesManager manager;
+    private IssuesManager manager = new IssuesManager(repo);
 
     private Issues n1;
 
@@ -56,13 +57,19 @@ class IssuesManagerTest {
     void setUp() {
     }
 
+
     @Test
-    void added() {
+    void getAll() {
+        repo.saveAll(List.of(n1, n2, n3, n4, n5));
+        Issues[] expected = new Issues[]{n1, n2, n3, n4, n5};
+        Issues[] actual = repo.getAll().toArray(new Issues[0]);
+
+        assertArrayEquals(expected, actual);
     }
 
     @Test
     void searchClose() {
-        repo.saveAll(List.of(n1, n2, n3, n4, n5));
+        assertTrue(repo.saveAll(List.of(n1, n2, n3, n4, n5)));
         Issues[] expected = new Issues[]{n1, n3, n5};
         Issues[] actual = manager.searchClose();
 
@@ -156,7 +163,7 @@ class IssuesManagerTest {
     }
 
     @Test
-    void openById() {
+    void openById3() {
         int idToOpen = 3;
         repo.saveAll(List.of(n1, n2, n3, n4, n5));
         manager.openById(idToOpen);
@@ -165,22 +172,51 @@ class IssuesManagerTest {
 
         assertArrayEquals(expected, actual);
     }
+
     @Test
-    void openByIdAlready() {
+    void openById5() {
         int idToOpen = 5;
         repo.saveAll(List.of(n1, n2, n3, n4, n5));
         manager.openById(idToOpen);
-
         Issues[] expected = new Issues[]{n2, n4, n5};
         Issues[] actual = manager.searchOpen();
+
         assertArrayEquals(expected, actual);
     }
 
     @Test
-    void removeById() {
+    void remove() {
+        repo.saveAll(List.of(n1, n2, n3, n4, n5));
+        repo.remove(n3);
+        Issues[] expected = new Issues[]{n1, n2, n4, n5};
+        Issues[] actual = repo.getAll().toArray(new Issues[0]);
+
+        assertArrayEquals(expected, actual);
     }
+
 
     @Test
     void searchByLabel() {
+        String labelIssue = "Error";
+        repo.saveAll(List.of(n1, n2, n3, n4, n5));
+        Issues[] expected = new Issues[]{n3};
+        Issues[] actual = manager.searchByLabel(labelIssue);
+
+        assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    public void shouldFindByIdNot() {
+        IssuesRepo expected = null;
+        assertThrows(NotFoundException.class, () -> repo.removeById(100));
+    }
+
+    @Test
+    void shouldRemoveById() {
+        repo.saveAll(List.of(n1, n2, n3, n4, n5));
+        Issues expected = n5;
+        Issues actual = repo.findById(5);
+
+        assertEquals(expected, actual);
     }
 }

@@ -1,6 +1,7 @@
 package ru.netology.manager;
 
 import ru.netology.domain.Issues;
+import ru.netology.domain.NotFoundException;
 import ru.netology.repo.IssuesRepo;
 
 public class IssuesManager {
@@ -18,10 +19,6 @@ public class IssuesManager {
 
     public IssuesManager(IssuesRepo repo) {
         this.repo = repo;
-    }
-
-    public void added(Issues issues) {
-        repo.add(issues);
     }
 
     public Issues[] searchClose() {
@@ -101,18 +98,6 @@ public class IssuesManager {
         }
     }
 
-    public void removeById(int id) {
-
-        Issues[] result;
-        result = new Issues[0];
-        for (Issues issues : repo.getAll()) {
-            if (issues.getId() == id) {
-
-                repo.remove(issues);
-            }
-        }
-    }
-
     public Issues[] searchByLabel(String labelIssue) {
         Issues[] result;
         result = new Issues[0];
@@ -127,3 +112,4 @@ public class IssuesManager {
         return result;
     }
 }
+
