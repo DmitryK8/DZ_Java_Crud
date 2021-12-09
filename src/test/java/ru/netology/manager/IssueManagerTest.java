@@ -2,54 +2,54 @@ package ru.netology.manager;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import ru.netology.domain.Issues;
+import ru.netology.domain.Issue;
 import ru.netology.domain.NotFoundException;
-import ru.netology.repo.IssuesRepo;
+import ru.netology.repo.IssueRepo;
 
 import java.util.List;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class IssuesManagerTest {
+class IssueManagerTest {
 
-    private IssuesRepo repo;
+    private IssueRepo repo;
 
     {
-        repo = new IssuesRepo();
+        repo = new IssueRepo();
     }
 
     private IssuesManager manager = new IssuesManager(repo);
 
-    private Issues n1;
+    private Issue n1;
 
     {
         manager = new IssuesManager(repo);
-        n1 = new Issues(1, "DZ1", true, "Дмитрий", Set.of("Ошибка"), Set.of("Олег"), Set.of("Альфа"), Set.of("Нет"));
+        n1 = new Issue(1, "DZ1", true, "Дмитрий", Set.of("Ошибка"), Set.of("Олег"), Set.of("Альфа"), Set.of("Нет"));
     }
 
-    private Issues n2;
+    private Issue n2;
 
     {
-        n2 = new Issues(2, "DZ2", false, "Вася Пупкин", Set.of("правка"), Set.of("Дмитрий"), Set.of("Бета"), Set.of("Нет"));
+        n2 = new Issue(2, "DZ2", false, "Вася Пупкин", Set.of("правка"), Set.of("Дмитрий"), Set.of("Бета"), Set.of("Нет"));
     }
 
-    private Issues n3;
+    private Issue n3;
 
     {
-        n3 = new Issues(3, "DZ3", true, "Федя", Set.of("Error"), Set.of("Кравченко"), Set.of("Юта"), Set.of("Нет"));
+        n3 = new Issue(3, "DZ3", true, "Федя", Set.of("Error"), Set.of("Кравченко"), Set.of("Юта"), Set.of("Нет"));
     }
 
-    private Issues n4;
+    private Issue n4;
 
     {
-        n4 = new Issues(4, "DZ4", false, "Дмитрий", Set.of("Спецификация"), Set.of("Вера"), Set.of("Зета"), Set.of("v1"));
+        n4 = new Issue(4, "DZ4", false, "Дмитрий", Set.of("Спецификация"), Set.of("Вера"), Set.of("Зета"), Set.of("v1"));
     }
 
-    private Issues n5;
+    private Issue n5;
 
     {
-        n5 = new Issues(5, "DZ5", true, "Вера", Set.of("Ошибка"), Set.of("Дмитрий"), Set.of("Заря"), Set.of("нет"));
+        n5 = new Issue(5, "DZ5", true, "Вера", Set.of("Ошибка"), Set.of("Дмитрий"), Set.of("Заря"), Set.of("нет"));
     }
 
 
@@ -61,8 +61,8 @@ class IssuesManagerTest {
     @Test
     void getAll() {
         repo.saveAll(List.of(n1, n2, n3, n4, n5));
-        Issues[] expected = new Issues[]{n1, n2, n3, n4, n5};
-        Issues[] actual = repo.getAll().toArray(new Issues[0]);
+        Issue[] expected = new Issue[]{n1, n2, n3, n4, n5};
+        Issue[] actual = repo.getAll().toArray(new Issue[0]);
 
         assertArrayEquals(expected, actual);
     }
@@ -70,8 +70,8 @@ class IssuesManagerTest {
     @Test
     void searchClose() {
         assertTrue(repo.saveAll(List.of(n1, n2, n3, n4, n5)));
-        Issues[] expected = new Issues[]{n1, n3, n5};
-        Issues[] actual = manager.searchClose();
+        Issue[] expected = new Issue[]{n1, n3, n5};
+        Issue[] actual = manager.searchClose();
 
         assertArrayEquals(expected, actual);
     }
@@ -79,8 +79,8 @@ class IssuesManagerTest {
     @Test
     void searchOpen() {
         repo.saveAll(List.of(n1, n2, n3, n4, n5));
-        Issues[] expected = new Issues[]{n2, n4};
-        Issues[] actual = manager.searchOpen();
+        Issue[] expected = new Issue[]{n2, n4};
+        Issue[] actual = manager.searchOpen();
 
         assertArrayEquals(expected, actual);
     }
@@ -90,8 +90,8 @@ class IssuesManagerTest {
         String author;
         author = "Дмитрий";
         repo.saveAll(List.of(n1, n2, n3, n4, n5));
-        Issues[] expected = new Issues[]{n1, n4};
-        Issues[] actual = manager.searchByAuthor(author);
+        Issue[] expected = new Issue[]{n1, n4};
+        Issue[] actual = manager.searchByAuthor(author);
 
         assertArrayEquals(expected, actual);
     }
@@ -101,8 +101,8 @@ class IssuesManagerTest {
         String author;
         author = "Вера";
         repo.saveAll(List.of(n1, n2, n3, n4, n5));
-        Issues[] expected = new Issues[]{n5};
-        Issues[] actual = manager.searchByAuthor(author);
+        Issue[] expected = new Issue[]{n5};
+        Issue[] actual = manager.searchByAuthor(author);
 
         assertArrayEquals(expected, actual);
     }
@@ -112,8 +112,8 @@ class IssuesManagerTest {
         String author;
         author = "Олег";
         repo.saveAll(List.of(n1, n2, n3, n4, n5));
-        Issues[] expected = new Issues[]{};
-        Issues[] actual = manager.searchByAuthor(author);
+        Issue[] expected = new Issue[]{};
+        Issue[] actual = manager.searchByAuthor(author);
 
         assertArrayEquals(expected, actual);
     }
@@ -123,8 +123,8 @@ class IssuesManagerTest {
         String successor;
         successor = "Дмитрий";
         repo.saveAll(List.of(n1, n2, n3, n4, n5));
-        Issues[] expected = new Issues[]{n2, n5};
-        Issues[] actual = manager.searchBySuccesor(successor);
+        Issue[] expected = new Issue[]{n2, n5};
+        Issue[] actual = manager.searchBySuccesor(successor);
 
         assertArrayEquals(expected, actual);
     }
@@ -134,8 +134,8 @@ class IssuesManagerTest {
         String successor;
         successor = "Вера";
         repo.saveAll(List.of(n1, n2, n3, n4, n5));
-        Issues[] expected = new Issues[]{n4};
-        Issues[] actual = manager.searchBySuccesor(successor);
+        Issue[] expected = new Issue[]{n4};
+        Issue[] actual = manager.searchBySuccesor(successor);
 
         assertArrayEquals(expected, actual);
     }
@@ -145,8 +145,8 @@ class IssuesManagerTest {
         String successor;
         successor = "Пупкин";
         repo.saveAll(List.of(n1, n2, n3, n4, n5));
-        Issues[] expected = new Issues[]{};
-        Issues[] actual = manager.searchBySuccesor(successor);
+        Issue[] expected = new Issue[]{};
+        Issue[] actual = manager.searchBySuccesor(successor);
 
         assertArrayEquals(expected, actual);
     }
@@ -156,8 +156,8 @@ class IssuesManagerTest {
         int idToClose = 2;
         repo.saveAll(List.of(n1, n2, n3, n4, n5));
         manager.closeById(idToClose);
-        Issues[] expected = new Issues[]{n1, n2, n3, n5};
-        Issues[] actual = manager.searchClose();
+        Issue[] expected = new Issue[]{n1, n2, n3, n5};
+        Issue[] actual = manager.searchClose();
 
         assertArrayEquals(expected, actual);
     }
@@ -167,8 +167,8 @@ class IssuesManagerTest {
         int idToOpen = 3;
         repo.saveAll(List.of(n1, n2, n3, n4, n5));
         manager.openById(idToOpen);
-        Issues[] expected = new Issues[]{n2, n3, n4};
-        Issues[] actual = manager.searchOpen();
+        Issue[] expected = new Issue[]{n2, n3, n4};
+        Issue[] actual = manager.searchOpen();
 
         assertArrayEquals(expected, actual);
     }
@@ -178,8 +178,8 @@ class IssuesManagerTest {
         int idToOpen = 5;
         repo.saveAll(List.of(n1, n2, n3, n4, n5));
         manager.openById(idToOpen);
-        Issues[] expected = new Issues[]{n2, n4, n5};
-        Issues[] actual = manager.searchOpen();
+        Issue[] expected = new Issue[]{n2, n4, n5};
+        Issue[] actual = manager.searchOpen();
 
         assertArrayEquals(expected, actual);
     }
@@ -188,8 +188,8 @@ class IssuesManagerTest {
     void remove() {
         repo.saveAll(List.of(n1, n2, n3, n4, n5));
         repo.remove(n3);
-        Issues[] expected = new Issues[]{n1, n2, n4, n5};
-        Issues[] actual = repo.getAll().toArray(new Issues[0]);
+        Issue[] expected = new Issue[]{n1, n2, n4, n5};
+        Issue[] actual = repo.getAll().toArray(new Issue[0]);
 
         assertArrayEquals(expected, actual);
     }
@@ -199,23 +199,23 @@ class IssuesManagerTest {
     void searchByLabel() {
         String labelIssue = "Error";
         repo.saveAll(List.of(n1, n2, n3, n4, n5));
-        Issues[] expected = new Issues[]{n3};
-        Issues[] actual = manager.searchByLabel(labelIssue);
+        Issue[] expected = new Issue[]{n3};
+        Issue[] actual = manager.searchByLabel(labelIssue);
 
         assertArrayEquals(expected, actual);
     }
 
     @Test
     public void shouldFindByIdNot() {
-        IssuesRepo expected = null;
+        IssueRepo expected = null;
         assertThrows(NotFoundException.class, () -> repo.removeById(100));
     }
 
     @Test
     void shouldRemoveById() {
         repo.saveAll(List.of(n1, n2, n3, n4, n5));
-        Issues expected = n5;
-        Issues actual = repo.findById(5);
+        Issue expected = n5;
+        Issue actual = repo.findById(5);
 
         assertEquals(expected, actual);
     }

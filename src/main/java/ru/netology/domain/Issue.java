@@ -10,7 +10,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class Issues {
+public class Issue {
     private int id;
     private String name;
     private boolean close;
