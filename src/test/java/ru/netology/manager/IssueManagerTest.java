@@ -19,12 +19,12 @@ class IssueManagerTest {
         repo = new IssueRepo();
     }
 
-    private IssuesManager manager = new IssuesManager(repo);
+    private IssueManager manager = new IssueManager(repo);
 
     private Issue n1;
 
     {
-        manager = new IssuesManager(repo);
+        manager = new IssueManager(repo);
         n1 = new Issue(1, "DZ1", true, "Дмитрий", Set.of("Ошибка"), Set.of("Олег"), Set.of("Альфа"), Set.of("Нет"));
     }
 

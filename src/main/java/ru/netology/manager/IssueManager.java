@@ -3,7 +3,7 @@ package ru.netology.manager;
 import ru.netology.domain.Issue;
 import ru.netology.repo.IssueRepo;
 
-public class IssuesManager {
+public class IssueManager {
     public IssueRepo repo;
 
     {
@@ -16,7 +16,7 @@ public class IssuesManager {
         items = new Issue[0];
     }
 
-    public IssuesManager(IssueRepo repo) {
+    public IssueManager(IssueRepo repo) {
         this.repo = repo;
     }
 
@@ -24,7 +24,7 @@ public class IssuesManager {
         Issue[] result;
         result = new Issue[0];
         for (Issue issue : repo.getAll()) {
-            if (issue.isClose() == true) {
+            if (issue.isClose()) {
                 Issue[] tmp = new Issue[result.length + 1];
                 System.arraycopy(result, 0, tmp, 0, result.length);
                 tmp[tmp.length - 1] = issue;
@@ -38,7 +38,7 @@ public class IssuesManager {
         Issue[] result;
         result = new Issue[0];
         for (Issue issue : repo.getAll()) {
-            if (issue.isClose() == false) {
+            if (!issue.isClose()) {
                 Issue[] tmp = new Issue[result.length + 1];
                 System.arraycopy(result, 0, tmp, 0, result.length);
                 tmp[tmp.length - 1] = issue;
@@ -48,11 +48,11 @@ public class IssuesManager {
         return result;
     }
 
-    public Issue[] searchByAuthor(String author) {
+    public Issue[] searchByAuthor(String list) {
         Issue[] result;
         result = new Issue[0];
         for (Issue issue : repo.getAll()) {
-            if (issue.getAuthor() == author) {
+            if (issue.getAuthor().equals(list)) {
                 Issue[] tmp = new Issue[result.length + 1];
                 System.arraycopy(result, 0, tmp, 0, result.length);
                 tmp[tmp.length - 1] = issue;
@@ -62,11 +62,11 @@ public class IssuesManager {
         return result;
     }
 
-    public Issue[] searchBySuccesor(String successor) {
+    public Issue[] searchBySuccesor(String list) {
         Issue[] result;
         result = new Issue[0];
         for (Issue issue : repo.getAll()) {
-            if (issue.getSuccessor().contains(successor)) {
+            if (issue.getSuccessor().contains(list)) {
                 Issue[] tmp = new Issue[result.length + 1];
                 System.arraycopy(result, 0, tmp, 0, result.length);
                 tmp[tmp.length - 1] = issue;
@@ -97,11 +97,11 @@ public class IssuesManager {
         }
     }
 
-    public Issue[] searchByLabel(String labelIssue) {
+    public Issue[] searchByLabel(String list) {
         Issue[] result;
         result = new Issue[0];
         for (Issue issue : repo.getAll()) {
-            if (issue.getLabel().contains(labelIssue)) {
+            if (issue.getLabel().contains(list)) {
                 Issue[] tmp = new Issue[result.length + 1];
                 System.arraycopy(result, 0, tmp, 0, result.length);
                 tmp[tmp.length - 1] = issue;

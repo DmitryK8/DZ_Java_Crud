@@ -14,15 +14,16 @@ public class Issue {
     private int id;
     private String name;
     private boolean close;
-    private String author;
-    private Set label;
-    private Set successor;
-    private Set projects;
-    private Set tags;
+    private String  author;
+    private Set<String> label;
+    private Set<String> successor;
+    private Set<String> projects;
+    private Set<String> tags;
 
     public int getId() {
         return id;
     }
+
     public void setId(int id) {
         this.id = id;
     }
